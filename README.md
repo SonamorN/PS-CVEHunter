@@ -24,7 +24,7 @@ yes, you may used it but this script has more of a sense of a boilerplate, to do
 and change it in a way that benefits you.
 
 # So how fast is this?
-This was search for MigRegDB.exe.mui in C Drive which holds 886946 files  
+This was search for MigRegDB.exe.mui in C Drive which holds 886946 files.  
 The script was run with 16 cores on a AMD Ryzen 3700X on an NVME disk
 It took roughly 125 seconds to provide results
 ```
@@ -37,6 +37,7 @@ VERBOSE: Fullpaths Completed [886946 files][39.03 secs]
 VERBOSE: Checking for Results  
 VERBOSE: Results returned [66.4 secs.]  
 ```
+
 # OK I am sold how to use this?
 * Step 1.
 Download the script
@@ -61,5 +62,27 @@ Search for both a.exe and b.log, with default number of cores (max 8), without g
 .\PS-CVEHunter.ps1 -needles "a.exe,b.log"
 ```
 
+# What are needles?
+If your drives are the haystack the needles are your search terms.
 
+# How the script is searching for a needle
+It uses the following regex
+`(?i)^.*?($needle).*`
+The search function is using a combination of a compiled regex and LINQ
+to scan through a list of filepaths extremely fast. Scanning ~900000 entries
+in ~66 seconds.
 
+# Explain this regex to me...
+I am too lazy see regex101 explanation where needle are your search terms:
+````
+
+(?i) match the remainder of the pattern with the following effective flags: i
+i modifier: insensitive. Case insensitive match (ignores case of [a-zA-Z])
+^ asserts position at start of the string
+. matches any character (except for line terminators)
+*? matches the previous token between zero and unlimited times, as few times as possible, expanding as needed (lazy)
+1st Capturing Group (needle)
+needle matches the characters needle literally (case insensitive)
+. matches any character (except for line terminators)
+* matches the previous token between zero and unlimited times, as many times as possible, giving back as needed (greedy)
+```

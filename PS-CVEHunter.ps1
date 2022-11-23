@@ -388,7 +388,6 @@ foreach ($drive in $drives) {
     Write-Verbose ""
 }
 # There is a bug in gdu where the root path of the drive will have to \\, convert them to single.
-Write-Host $searchresults  -ForegroundColor Red
 
 if ($searchResults -ne $null) {
     $searchresults = $searchresults | Foreach-Object { $_.Replace(':\\', ':\') } 

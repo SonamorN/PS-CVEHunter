@@ -62,23 +62,21 @@ Detail on what the script does, if this is needed.
 [CmdletBinding()]
 Param(
      
-[int]$maxCores = 8,
-[string]$DrivesExclude,
-[Parameter(Mandatory=$true)]
-[string]$needles,
-[int]$GCValue,
-[string]$OutputFilePath
+    [int]$maxCores = 8,
+    [string]$DrivesExclude,
+    [Parameter(Mandatory = $true)]
+    [string]$needles,
+    [int]$GCValue,
+    [string]$OutputFilePath
 )
 
-if ($VerbosePreference -eq $true)
-{
+if ($VerbosePreference -eq $true) {
     $VerbosePreference = "continue"
 } 
 [string[]]$needles = $needles -split ","
 [string[]]$DrivesExclude = $DrivesExclude -split ","
 
-function Get-PhysicalDrives
-{
+function Get-PhysicalDrives {
     [CmdletBinding()]
     param (
         [Parameter()]
@@ -101,14 +99,13 @@ function Get-PhysicalDrives
     # DriveLetter FriendlyName FileSystemType DriveType HealthStatus OperationalStatus SizeRemaining      Size
     # ----------- ------------ -------------- --------- ------------ ----------------- -------------      ----
     # D           DATA         NTFS           Fixed     Healthy      OK                     59.29 GB 915.63 GB
-    $drives = Get-Volume | Where {$_.DriveLetter -ne $null -and $_.FileSystemType -eq "NTFS"}
-    $drives= $drives | Where {$_.DriveLetter -notin $DrivesExclude} | Sort-Object DriveLetter
+    $drives = Get-Volume | Where { $_.DriveLetter -ne $null -and $_.FileSystemType -eq "NTFS" }
+    $drives = $drives | Where { $_.DriveLetter -notin $DrivesExclude } | Sort-Object DriveLetter
     return $drives
 }
 
-function Get-GDUPath
-{
-      <#
+function Get-GDUPath {
+    <#
     .SYNOPSIS
        This function will return the gdu executable path.
        The gdu executable should in the same folder as the script.
@@ -129,7 +126,7 @@ function Get-GDUPath
 
 
 function  ConvertTo-FullPath {
-      <#
+    <#
     .SYNOPSIS
         This function gets the PsCustomObject that has been created from the 
         json outputed from GDU and restructures the full path of a file.
@@ -188,9 +185,8 @@ function  ConvertTo-FullPath {
 
 }
 
-function Get-FullPathInitiator
-{
-      <#
+function Get-FullPathInitiator {
+    <#
     .SYNOPSIS
         Helper function that calls Get-Fullpath
 
@@ -213,19 +209,18 @@ function Get-FullPathInitiator
        see https://github.com/dundee/gdu/issues/184
 
     #>
-   param(
-    $jsondata
-   )
+    param(
+        $jsondata
+    )
 
-   $data = $jsondata  
+    $data = $jsondata  
  
     ConvertTo-FullPath -data $data[3] -path ''
   
-   return $global:jsonresults
+    return $global:jsonresults
 }
 
-function Invoke-GDUPath
-{
+function Invoke-GDUPath {
     <#
     .SYNOPSIS
         This function runs the gdu
@@ -280,9 +275,8 @@ function Invoke-GDUPath
     $psi.RedirectStandardOutput = $true 
     $psi.RedirectStandardError = $true 
     #$psi.FileName = $gduPath 
-    if ($GCValue)
-    {
-        $psi.EnvironmentVariables["GOGC"]=$GCValue
+    if ($GCValue) {
+        $psi.EnvironmentVariables["GOGC"] = $GCValue
         $arguments = "$driveFull -g -o- -p -m $maxCores"
     }
     $psi.FileName = $gduPath
@@ -296,8 +290,7 @@ function Invoke-GDUPath
     return $output
 }
 
-function Get-Needles
-{
+function Get-Needles {
     <#
     .SYNOPSIS
        The functions uses LINQ to scan fast through the fullpaths and scan via regex for results  
@@ -334,70 +327,82 @@ function Get-Needles
 
     #>
   
-param(
-    [string[]]$needles,
-    [string[]]$lines
-)
+    param(
+        [string[]]$needles,
+        [string[]]$lines
+    )
     $needleresults = $null
     $needleresults = @()
     $needles = $needles -join "|"
-    $regex = [regex]::new("(?i)^.*?($needles).*","Compiled")
-    [Func[String,bool]] $delegate = { param($d); return $regex.Matches($d)}
+    $regex = [regex]::new("(?i)^.*?($needles).*", "Compiled")
+    [Func[String, bool]] $delegate = { param($d); return $regex.Matches($d) }
 
-    $needleresults += [Linq.Enumerable]::Where($lines,$delegate)
+    $needleresults += [Linq.Enumerable]::Where($lines, $delegate)
   
     return $needleresults
 }
 
-$drives = Get-PhysicalDrives -DrivesExclude $DrivesExclude # Get Drives
 $gduPath = Get-GDUPath  # Get GDU executable path
+if ($gduPath -ne $null)
+{
+$drives = Get-PhysicalDrives -DrivesExclude $DrivesExclude # Get Drives
+
 $searchresults = [System.Collections.ArrayList]@() # Create arraylist to store results
 
 Write-Verbose "Searching for the following needles:" 
 Write-Verbose "$($needles -join "`r`n")`r`n"
-foreach ($drive in $drives)
-{
+foreach ($drive in $drives) {
     $global:jsonresults = [System.Collections.ArrayList]@() # Create an arraylist to hold json results
     $txt = $null  # empty variable that holds fullpaths
     $json = $null # empty variable that holds gdu json results 
-    $gdustopwatch =  [system.diagnostics.stopwatch]::StartNew() # Create a stopwatch to count how long it takes to scan
+    $gdustopwatch = [system.diagnostics.stopwatch]::StartNew() # Create a stopwatch to count how long it takes to scan
 
 
     Write-Verbose "Scanning $($drive.DriveLetter):\..." 
 
     # Run GDU and if GCValue has been passed, pass it to GDU
-    if ($GCValue)
-    {
+    if ($GCValue) {
         $json = Invoke-GDUPath -gduPath $gduPath -drive $drive.DriveLetter -maxCores $maxCores -GCValue $GCValue
-    }else {
+    }
+    else {
         $json = Invoke-GDUPath -gduPath $gduPath -drive $drive.DriveLetter -maxCores $maxCores
     }
     
-    $gdustopwatchTime = [math]::Round($gdustopwatch.Elapsed.TotalSeconds,2)
+    $gdustopwatchTime = [math]::Round($gdustopwatch.Elapsed.TotalSeconds, 2)
     $gdustopwatch.Stop()
     Write-Verbose "GDU Scanning completed [$gdustopwatchTime secs.]" 
-    $txtstopwatch =  [system.diagnostics.stopwatch]::StartNew()
+    $txtstopwatch = [system.diagnostics.stopwatch]::StartNew()
     Write-Verbose "Getting FullPaths" 
     $txt = Get-FullPathInitiator -jsondata $json # Invoke the helper function to get from JSON to FullPaths
-    $txtstopwatchTime = [math]::Round($txtstopwatch.Elapsed.TotalSeconds,2)
+    $txtstopwatchTime = [math]::Round($txtstopwatch.Elapsed.TotalSeconds, 2)
     $txtstopwatch.Stop()
     Write-Verbose "Fullpaths Completed [$($txt.Count) files][$txtstopwatchTime secs]" 
-    $needlestopwatch =  [system.diagnostics.stopwatch]::StartNew()
+    $needlestopwatch = [system.diagnostics.stopwatch]::StartNew()
     Write-Verbose "Checking for Results"
     
     [void]$searchresults.Add((Get-Needles -needles $needles -lines $txt)) # Get the results and dump them in an arraylist
-    $needlestopwatchTime = [math]::Round($needlestopwatch.Elapsed.TotalSeconds,2) 
+    $needlestopwatchTime = [math]::Round($needlestopwatch.Elapsed.TotalSeconds, 2) 
     $needlestopwatch.Stop()
     #Write-Verbose "TxtCount: $($txt.Count)" -ForeGroundColor Red
     Write-Verbose "Results returned [$needlestopwatchTime secs.]" 
     Write-Verbose ""
 }
 # There is a bug in gdu where the root path of the drive will have to \\, convert them to single.
-$searchresults = $searchresults | Foreach-Object{$_.Replace(':\\',':\')} 
-Write-Verbose "Results:`r`n"
-Write-Host "$($searchresults | fl | Out-String )" -ForeGroundColor Green
+Write-Host $searchresults  -ForegroundColor Red
 
-if ($OutputFilePath)
-{
-    $searchresults | Out-File $OutputFilePath -Encoding "UTF8" -Force
+if ($searchResults -ne $null) {
+    $searchresults = $searchresults | Foreach-Object { $_.Replace(':\\', ':\') } 
+    Write-Verbose "Results:`r`n"
+    Write-Host "$($searchresults | fl | Out-String )" -ForeGroundColor Green
+
+    if ($OutputFilePath) {
+        $searchresults | Out-File $OutputFilePath -Encoding "UTF8" -Force
+    }
+}else {
+    Write-Host "No results, try changing your needles"
+}
+}
+else {
+    Write-Error -Message "Please put GDU executable in the same folder as the ps1 script.`r`nMake sure gdu is in the filename of the executable"`
+    -Category ObjectNotFound
 }

@@ -74,8 +74,7 @@ in ~66 seconds.
 
 # Explain this regex to me...
 I am too lazy see regex101 explanation where needle are your search terms:
-````
-
+```
 (?i) match the remainder of the pattern with the following effective flags: i
 i modifier: insensitive. Case insensitive match (ignores case of [a-zA-Z])
 ^ asserts position at start of the string
@@ -84,5 +83,9 @@ i modifier: insensitive. Case insensitive match (ignores case of [a-zA-Z])
 1st Capturing Group (needle)
 needle matches the characters needle literally (case insensitive)
 . matches any character (except for line terminators)
-* matches the previous token between zero and unlimited times, as many times as possible, giving back as needed (greedy)
+* matches the previous token between zero and unlimited times, as many times as possible, giving back as needed (greedy)   
 ```
+
+# Why do you call this a CVE Hunter it's a mere filename searcher
+Because CVE detection is why I use the script, if I want to search for a specific file I either use file explorer, everything from void tools or something in between.    
+This script is to be used in server environments to return filenames that are related to CVEs.

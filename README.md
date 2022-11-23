@@ -9,7 +9,7 @@ In the last few months/years more and more CVEs are coming up that can be detect
 for certain filenames
 e.g.
 - log4j
-- Apache Text commons
+- Apache Text commons 
 and probably more but these were a few of the ones I had to deal with
 
 # What is gdu and why the script needs it?

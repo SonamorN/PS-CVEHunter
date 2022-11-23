@@ -62,7 +62,7 @@ Search for both a.exe and b.log, with default number of cores (max 8), without g
 .\PS-CVEHunter.ps1 -needles "a.exe,b.log"
 ```
 
-# What are needles?
+# What are needles and why needles?
 If your drives are the haystack the needles are your search terms.
 
 # How the script is searching for a needle

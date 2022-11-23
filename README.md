@@ -1,5 +1,5 @@
 # PS-CVEHunter
-A boilerplate of script that searches disks for given filenames that belog to CVEs, using gdu.
+A boilerplate of script that searches for given filenames in given or all disks on your system that belong to CVEs. Under the hood gdu is used to pull dirs and filenames.
 
 # What does this script do?
 This script searches for given filenames in the given system drives and returns results

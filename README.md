@@ -13,8 +13,13 @@ e.g.
 and probably more but these were a few of the ones I had to deal with
 
 # What is gdu and why the script needs it?
-Have you ever tried using Get-ChildItem for a whole drive?
-Run it, go grab a beer, then a second one come back and it will still be running
+Have you ever tried using Get-ChildItem for a whole drive?   
+
+Run it, go grab a beer, then a second beer, come back and it will still be running. 
+Now go grab a third beer, keep doing this till it's finished.  
+
+Now you are wasted and you can't do anything with the results. 
+
 gdu provides a fast and easy way to get all the filenames and directories from a given
 path within a few seconds. More about it here https://github.com/dundee/gdu
 

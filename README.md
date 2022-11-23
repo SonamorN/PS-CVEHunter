@@ -27,7 +27,6 @@ and change it in a way that benefits you.
 This was search for MigRegDB.exe.mui in C Drive which holds 886946 files  
 The script was run with 16 cores on a AMD Ryzen 3700X on an NVME disk
 It took roughly 125 seconds to provide results
-
 ```
 VERBOSE: Searching for the following needles:  
 VERBOSE: MigRegDB.exe.mui  

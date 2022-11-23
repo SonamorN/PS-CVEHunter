@@ -28,14 +28,14 @@ This was search for MigRegDB.exe.mui in C Drive which holds 886946 files
 The script was run with 16 cores on a AMD Ryzen 3700X on an NVME disk
 It took roughly 125 seconds to provide results
 
-VERBOSE: Searching for the following needles:
-VERBOSE: MigRegDB.exe.mui
-VERBOSE: Scanning C:\...
-VERBOSE: GDU Scanning completed [19.54 secs.]
-VERBOSE: Getting FullPaths
-VERBOSE: Fullpaths Completed [886946 files][39.03 secs]
-VERBOSE: Checking for Results
-VERBOSE: Results returned [66.4 secs.]
+VERBOSE: Searching for the following needles:  
+VERBOSE: MigRegDB.exe.mui  
+VERBOSE: Scanning C:\...  
+VERBOSE: GDU Scanning completed [19.54 secs.]  
+VERBOSE: Getting FullPaths  
+VERBOSE: Fullpaths Completed [886946 files][39.03 secs]  
+VERBOSE: Checking for Results  
+VERBOSE: Results returned [66.4 secs.]  
 
 # OK I am sold how to use this?
 Step 1.

@@ -23,14 +23,14 @@ Now you are wasted and you can't do anything with the results.
 gdu provides a fast and easy way to get all the filenames and directories from a given
 path within a few seconds. More about it here https://github.com/dundee/gdu
 
-# So is this a finished script can I use it?
-Most certainly if you want to search for a given string of a filename on your drives
-yes, you may used it but this script has more of a sense of a boilerplate, to download it
+# So is this a finished script, can I use it?
+Most certainly, if you want to search for a given string of a filename on your drives, then
+yes, you may use it but this script has more of a sense of a boilerplate, to download it
 and change it in a way that benefits you.
 
 # So how fast is this?
-This was search for MigRegDB.exe.mui in C Drive which holds 886946 files.  
-The script was run with 16 cores on a AMD Ryzen 3700X on an NVME disk
+This was a search for MigRegDB.exe.mui in C Drive which holds 886946 files.  
+The script ran with 16 cores, on a AMD Ryzen 3700X, on an NVME disk
 It took roughly 125 seconds to provide results
 ```
 VERBOSE: Searching for the following needles:  
@@ -51,11 +51,11 @@ Place in a folder of your choice
 Download windows gdu version from:
 https://github.com/dundee/gdu
 * Step 3.
-Check the scrit's documentation on how to run it.
+Check the script's documentation on how to run it.
 
 # OK how to run this?
 The script is kinda well documented and I will show some examples here.
-As this is intended to be a boilerplate rather than a script to copy, paste and run I won't give to much info. 
+As this is intended to be a boilerplate rather than a script to copy, paste and run, I won't give too much info. 
 
 Search for a.exe, with 16cores, provide more info, output the results to a txt file and exclude disk C
 
@@ -70,7 +70,7 @@ Search for both a.exe and b.log, with default number of cores (max 8), without g
 # What are needles and why needles?
 If your drives are the haystack the needles are your search terms.
 
-# How the script is searching for a needle
+# How is the script searching for a needle(s) 
 It uses the following regex
 `(?i)^.*?($needle).*`
 The search function is using a combination of a compiled regex and LINQ
@@ -78,7 +78,7 @@ to scan through a list of filepaths extremely fast. Scanning ~900000 entries
 in ~66 seconds.
 
 # Explain this regex to me...
-I am too lazy see regex101 explanation where needle are your search terms:
+I am too lazy, see regex101 explanation, where needle are your search terms:
 ```
 (?i) match the remainder of the pattern with the following effective flags: i
 i modifier: insensitive. Case insensitive match (ignores case of [a-zA-Z])
@@ -91,6 +91,9 @@ needle matches the characters needle literally (case insensitive)
 * matches the previous token between zero and unlimited times, as many times as possible, giving back as needed (greedy)   
 ```
 
-# Why do you call this a CVE Hunter it's a mere filename searcher
+# Why do you call this a CVE Hunter? it's a mere filename searcher
 Because CVE detection is why I use the script, if I want to search for a specific file I either use file explorer, everything from void tools or something in between.    
 This script is to be used in server environments to return filenames that are related to CVEs.
+
+It is in the same sense that you don't call every vehicle a car. Some of them might be trucks doing a certain job better. 
+
